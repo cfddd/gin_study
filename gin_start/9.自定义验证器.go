@@ -8,6 +8,7 @@ import (
 )
 
 type User struct {
+	//在binding中添加了sign验证器，调用自己的判断函数
 	Name string `json:"name" binding:"required,sign" msg:"用户名校验失败"`
 	Age  int    `json:"age" binding:"required" msg:"年龄校验失败"`
 }
@@ -31,7 +32,8 @@ func _GetValidMsg(err error, obj any) string {
 	return err.Error()
 }
 
-// 如果用户名等于nameSt中就校验失败
+// 如果用户名等于nameSt就校验失败
+// 自己的判断函数
 func signValid(fl validator.FieldLevel) bool {
 	var nameSt string = "cfddfc"
 	name := fl.Field().Interface().(string)
@@ -45,6 +47,9 @@ func signValid(fl validator.FieldLevel) bool {
 func main() {
 	router := gin.Default()
 
+	//自定义验证器
+	//这里添加了一个sign
+	//在上面的结构体中binding里面有相关信息
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		v.RegisterValidation("sign", signValid)
 	}
