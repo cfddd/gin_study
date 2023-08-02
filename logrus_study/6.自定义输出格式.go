@@ -53,7 +53,7 @@ func (f MyFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	//自定义文件路径
 	funcVal := entry.Caller.Function
 
-	//文件行号
+	//显示文件行号
 	fileVal := fmt.Sprintf("%s:%d", path.Base(entry.Caller.File), entry.Caller.Line)
 	//自定义文件格式
 	fmt.Fprintf(b, "[%s] \033[3%dm[%s]\033[0m [%s] [%s] [%s] [%s]\n", f.Prefix, color, entry.Level, formatTime, fileVal, funcVal, entry.Message)
